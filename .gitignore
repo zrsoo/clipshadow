@@ -1,0 +1,30 @@
+# Ignore Windows executables
+*.exe
+
+# Ignore object files
+*.o
+
+# Ignore build files
+/build/
+/bin/
+/dist/
+clipwatcher
+
+# Ignore VS Code config files (optional)
+.vscode/
+
+# Ignore temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignore compiled binaries
+*.dll
+*.lib
+*.a
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
