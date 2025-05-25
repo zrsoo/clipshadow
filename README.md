@@ -15,9 +15,9 @@ This repository contains the development of a custom Windows clipboard intercept
 ## 📦 Features (Current v1)
 
 - [x] Native Windows C++ binary
-- [ ] Uses WinAPI to access clipboard (`OpenClipboard`, `GetClipboardData`, etc.)
-- [ ] Polls every 2 seconds
-- [ ] Detects and logs clipboard changes
+- [x] Uses WinAPI to access clipboard (`OpenClipboard`, `GetClipboardData`, etc.)
+- [x] Polls every X seconds (configurable)
+- [x] Detects and logs clipboard changes
 
 ---
 
