@@ -24,8 +24,8 @@ This repository contains the development of a custom Windows clipboard intercept
 ## 📋 Roadmap / To-Do
 
 ### 🔹 Core Clipboard Functionality
-- [ ] Poll clipboard for text
-- [ ] Detect changes and avoid duplicate logs
+- [x] Poll clipboard for text
+- [x] Detect changes and avoid duplicate logs
 - [ ] Add support for Unicode clipboard content (`CF_UNICODETEXT`)
 
 ### 🔹 Exfiltration Mechanisms
