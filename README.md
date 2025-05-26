@@ -29,7 +29,7 @@ This repository contains the development of a custom Windows clipboard intercept
 - [x] Add support for Unicode clipboard content (`CF_UNICODETEXT`)
 
 ### 🔹 Exfiltration Mechanisms
-- [ ] Send clipboard content via HTTP POST
+- [x] Send clipboard content via HTTP POST
 - [ ] Add endpoint configuration (host/port)
 - [ ] Encrypt clipboard data before sending
 
