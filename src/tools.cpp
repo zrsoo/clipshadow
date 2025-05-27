@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 #include "aes.h"
 
 std::string WStringToUtf8(const std::wstring& wstr)
@@ -24,21 +25,43 @@ std::string WStringToUtf8(const std::wstring& wstr)
     return result;
 }
 
-// PKCS7 padding removal
 std::vector<uint8_t> RemovePKCS7Padding(const std::vector<uint8_t>& input) {
     if (input.empty()) return {};
+
     uint8_t pad_len = input.back();
-    
+
     // TODO remove
     std::cout << "pad_len = " << (int)pad_len << ", input size = " << input.size() << "\n";
-    
-    if (pad_len > input.size()) return {};
+
+    if (pad_len == 0 || pad_len > input.size()) return {};
+
+    for (size_t i = input.size() - pad_len; i < input.size(); ++i) {
+        if (input[i] != pad_len) return {};
+    }
+
     return std::vector<uint8_t>(input.begin(), input.end() - pad_len);
 }
+
 
 // Decrypt AES-256-CBC encrypted data
 std::string DecryptAES256CBC(const std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv) {
     std::vector<uint8_t> buffer(ciphertext); // make a copy we can decrypt in-place
+
+    // TODO remove
+    std::cout << "Raw encrypted buffer (hex): ";
+    for (uint8_t b : buffer) std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)b << " ";
+    std::cout << std::dec << "\n";
+
+    // TODO remove
+    std::cout << "IV (hex): ";
+    for (uint8_t b : iv) std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)b << " ";
+    std::cout << std::dec << "\n";
+
+    if (ciphertext.empty() || ciphertext.size() % 16 != 0) 
+    {
+        std::cerr << "Invalid ciphertext length for AES-CBC: " << ciphertext.size() << "\n";
+        return {};
+    }
 
     struct AES_ctx ctx;
     AES_init_ctx_iv(&ctx, key.data(), iv.data());
@@ -48,7 +71,6 @@ std::string DecryptAES256CBC(const std::vector<uint8_t>& ciphertext, const std::
     std::cout << "Raw decrypted buffer (hex): ";
     for (uint8_t b : buffer) std::cout << std::hex << (int)b << " ";
     std::cout << std::dec << "\n";
-
 
     auto unpadded = RemovePKCS7Padding(buffer);
     return std::string(unpadded.begin(), unpadded.end());
@@ -100,7 +122,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
 
     // TODO remove
     std::cout << "Extracted config (" << config.size() << " bytes): ";
-    for (auto b : config) std::cout << std::hex << (int)b << " ";
+    for (uint8_t b : config) std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)b << " ";
     std::cout << std::dec << "\n";
 
     size_t index = 0;
@@ -108,6 +130,12 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     // === Extract AES key (32 bytes) ===
     auto key = std::vector<uint8_t>(config.begin(), config.begin() + 32);
     index += 32;
+
+
+    // TODO remove
+    std::cout << "KEY (hex): ";
+    for (uint8_t b : key) std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)b << " ";
+    std::cout << std::dec << "\n";
 
     // === Extract Host ===
     auto iv_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);

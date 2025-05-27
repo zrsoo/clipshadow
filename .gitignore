@@ -28,3 +28,6 @@ clipwatcher
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Ignore secret files
+config_blob.h
