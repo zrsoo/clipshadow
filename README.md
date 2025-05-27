@@ -30,13 +30,12 @@ This repository contains the development of a custom Windows clipboard intercept
 
 ### 🔹 Exfiltration Mechanisms
 - [x] Send clipboard content via HTTP POST
-- [ ] Add endpoint configuration (host/port)
 - [ ] Encrypt clipboard data before sending
 
 ### 🔹 Stealth & Persistence
 - [ ] Hide console window using `SW_HIDE`
 - [ ] Add persistence via Windows registry (Run key)
-- [ ] Add optional scheduled task persistence
+- [ ] Use LSB altering of .WAV file to store AES key and host, port, path config 
 
 ### 🔹 Command & Control (C2)
 - [ ] Implement basic HTTP-based C2 to issue commands (pause, resume, update)
