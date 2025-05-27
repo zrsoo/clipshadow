@@ -14,7 +14,7 @@ for byte in byte_values:
         bitstream.append(bit)
 
 # === Step 2: Open the base WAV ===
-with wave.open("crypt/ouch.wav", "rb") as wav:
+with wave.open("ouch.wav", "rb") as wav:
     params = wav.getparams()
     assert params.sampwidth == 2, "Only 16-bit WAV files are supported."
     assert params.nchannels in [1, 2], "Mono or stereo only."

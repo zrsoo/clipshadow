@@ -9,7 +9,7 @@ original_bytes = [int(x, 16) for x in re.findall(r"0x([0-9A-Fa-f]{2})", content)
 num_bits = len(original_bytes) * 8
 
 # === Read stego.wav and extract LSBs ===
-with wave.open("crypt/ouch.wav", "rb") as wav:
+with wave.open("ouch.wav", "rb") as wav:
     samples = bytearray(wav.readframes(wav.getnframes()))
 
 # Rebuild bitstream from LSBs

