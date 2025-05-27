@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <cstring>
+#include <iostream>
 #include "aes.h"
 
 std::string WStringToUtf8(const std::wstring& wstr)
@@ -27,6 +28,10 @@ std::string WStringToUtf8(const std::wstring& wstr)
 std::vector<uint8_t> RemovePKCS7Padding(const std::vector<uint8_t>& input) {
     if (input.empty()) return {};
     uint8_t pad_len = input.back();
+    
+    // TODO remove
+    std::cout << "pad_len = " << (int)pad_len << ", input size = " << input.size() << "\n";
+    
     if (pad_len > input.size()) return {};
     return std::vector<uint8_t>(input.begin(), input.end() - pad_len);
 }
@@ -38,6 +43,12 @@ std::string DecryptAES256CBC(const std::vector<uint8_t>& ciphertext, const std::
     struct AES_ctx ctx;
     AES_init_ctx_iv(&ctx, key.data(), iv.data());
     AES_CBC_decrypt_buffer(&ctx, buffer.data(), buffer.size());
+
+    // TODO remove
+    std::cout << "Raw decrypted buffer (hex): ";
+    for (uint8_t b : buffer) std::cout << std::hex << (int)b << " ";
+    std::cout << std::dec << "\n";
+
 
     auto unpadded = RemovePKCS7Padding(buffer);
     return std::string(unpadded.begin(), unpadded.end());
@@ -57,7 +68,7 @@ std::vector<uint8_t> ExtractEmbeddedConfigFromWav(const std::string& filepath)
     std::vector<uint8_t> wav_data(std::istreambuf_iterator<char>(file), {});
 
     // AES key + IV + LEN + ENC_FIELDS
-    constexpr size_t nr_bytes_to_extract = 32 + 16 + 1 + 32 + 1 + 32 + 1 + 32;
+    constexpr size_t nr_bytes_to_extract = 99;
     constexpr size_t nr_bits_to_extract = nr_bytes_to_extract * 8;
     
     if(wav_data.size() < nr_bits_to_extract * 2)
@@ -86,6 +97,11 @@ std::vector<uint8_t> ExtractEmbeddedConfigFromWav(const std::string& filepath)
 std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const std::string& filepath)
 {
     std::vector<uint8_t> config = ExtractEmbeddedConfigFromWav(filepath);
+
+    // TODO remove
+    std::cout << "Extracted config (" << config.size() << " bytes): ";
+    for (auto b : config) std::cout << std::hex << (int)b << " ";
+    std::cout << std::dec << "\n";
 
     // Parse slices
     auto key = std::vector<uint8_t>(config.begin(), config.begin() + 32);
