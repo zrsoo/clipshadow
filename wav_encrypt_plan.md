@@ -57,7 +57,7 @@
 
 - [x] AES key generation and encryption working in Python
 - [x] Output to `config_blob.h` for C++ integration
-- [ ] `.wav` embedding logic (next)
+- [x] `.wav` embedding logic (next)
 - [ ] `.wav` parser + bit extractor in C++
 - [ ] AES decryption in C++
 - [ ] Integration into full payload
