@@ -42,9 +42,10 @@ binary_blob = (
 
 # === WRITE TO C++ FRIENDLY FILE ===
 cpp_array = ", ".join(f"0x{b:02X}" for b in binary_blob)
-cpp_output = f"// AES-256 key (base64): {base64_key}\nunsigned char embedded_config[] = {{ {cpp_array} }};\n"
+cpp_output = f"// AES-256 key (base64): {base64_key}\n// HOST IV: {iv_host}\n// PORT IV: {iv_port}\n// PATH IV {iv_path}\nunsigned char embedded_config[] = {{ {cpp_array} }};\n"
 
 with open("config_blob.h", "w") as f:
     f.write(cpp_output)
 
 base64_key  # Show the base64 version of the AES key
+print(f"Total config size (bytes): {len(binary_blob)}")

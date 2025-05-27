@@ -14,7 +14,7 @@ for byte in byte_values:
         bitstream.append(bit)
 
 # === Step 2: Open the base WAV ===
-with wave.open("ouch.wav", "rb") as wav:
+with wave.open("ouch_original.wav", "rb") as wav:
     params = wav.getparams()
     assert params.sampwidth == 2, "Only 16-bit WAV files are supported."
     assert params.nchannels in [1, 2], "Mono or stereo only."
@@ -30,7 +30,7 @@ for i, bit in enumerate(bitstream):
     samples[sample_index] = (samples[sample_index] & 0xFE) | bit  # overwrite LSB
 
 # === Step 4: Write to stego.wav ===
-with wave.open("stego.wav", "wb") as out:
+with wave.open("ouch.wav", "wb") as out:
     out.setparams(params)
     out.writeframes(samples)
 

@@ -38,7 +38,9 @@ int main() {
 
     auto [host, port, path] = ExtractAndDecryptConfig("ouch.wav");
 
-    std::cout << "DECRYPTED_HOST: " + host << "\nDECRYPTED_PORT: " + port + "\nDECRYPTED_PATH: " + path << "\n";
+    std::cout << "DECRYPTED_HOST: " + host << " (" << host.length() << ")\n";
+    std::cout << "\nDECRYPTED_PORT: " + port << " (" << port.length() << ")\n";
+    std::cout << "\nDECRYPTED_PATH: " + path << " (" << path.length() << ")\n";
 
     // while(true)
     // {

