@@ -23,39 +23,27 @@ This repository contains the development of a custom Windows clipboard intercept
 
 ## 📋 Roadmap / To-Do
 
-### 🔹 Core Clipboard Functionality
+## 🔹 Core Clipboard Functionality
 - [x] Poll clipboard for text
 - [x] Detect changes and avoid duplicate logs
 - [x] Add support for Unicode clipboard content (`CF_UNICODETEXT`)
 
-### 🔹 Exfiltration Mechanisms
-- [x] Send clipboard content via HTTP POST
+## 🔹 Encrypted HTTPS Exfiltration
+- [x] Parse config (host, port, path) from `.wav` via LSB
+- [x] Extract and decode AES key from `.wav`
+- [x] Decrypt configuration
+- [x] Convert clipboard data to UTF-8
+- [ ] Migrate HTTP to **HTTPS** (via WinHTTP or adjusted WinINet)
 - [ ] Encrypt clipboard data before sending
 
-### 🔹 Stealth & Persistence
-- [ ] Hide console window using `SW_HIDE`
-- [ ] Add persistence via Windows registry (Run key)
-- [ ] Use LSB altering of .WAV file to store AES key and host, port, path config 
-
-### 🔹 Command & Control (C2)
-- [ ] Implement basic HTTP-based C2 to issue commands (pause, resume, update)
-- [ ] Support "fetch logs on demand"
-- [ ] Add runtime reconfiguration (change sleep time, filters)
-
-### 🔹 Filtering & Targeting
-- [ ] Add regex-based filters (emails, crypto wallets, credit cards)
-- [ ] Exfiltrate only matched data
-- [ ] Trigger only if specific apps/windows are focused
-
-### 🔹 Obfuscation & Evasion
-- [ ] Encrypt all strings at compile-time
-- [ ] Use random delays and noise to evade behavioral detection
-- [ ] Evaluate AV/EDR detection with common test cases
-
-### 🔹 Research & Evaluation
-- [ ] Compare behavior against malware detection engines (Defender, Sysmon, etc.)
-- [ ] Document stealth strategies and failure points
-- [ ] Write up academic section with comparative analysis
+## 🔹 Stealth & Evasion
+- [ ] Hide console window (`SW_HIDE`)
+- [ ] Add persistence via Windows Registry (`HKCU\...\Run`)
+- [x] Static build (no DLL dependencies)
+- [ ] Encrypt all static strings (XOR or compile-time)
+- [ ] Add randomized delays to mimic human behavior
+- [ ] Minimize binary footprint (optional UPX, etc.)
+- [ ] Obfuscate generated machine code
 
 ---
 
