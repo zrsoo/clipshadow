@@ -26,7 +26,6 @@ This repository contains the development of a custom Windows clipboard intercept
 ## 🔹 Core Clipboard Functionality
 - [x] Poll clipboard for text
 - [x] Detect changes and avoid duplicate logs
-- [x] Add support for Unicode clipboard content (`CF_UNICODETEXT`)
 
 ## 🔹 Encrypted HTTPS Exfiltration
 - [x] Parse config (host, port, path) from `.wav` via LSB
