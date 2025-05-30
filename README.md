@@ -37,7 +37,7 @@ This repository contains the development of a custom Windows clipboard intercept
 
 ## 🔹 Stealth & Evasion
 - [x] Hide console window - compile with -mwindows
-- [ ] Add persistence via Windows Registry (`HKCU\...\Run`)
+- [x] Add persistence via Windows Registry (`HKCU\...\Run`)
 - [x] Static build (no DLL dependencies)
 - [ ] Encrypt all static strings (XOR or compile-time)
 - [ ] Add randomized delays to mimic human behavior

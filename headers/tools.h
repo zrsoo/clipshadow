@@ -4,3 +4,4 @@
 #include <tuple>
 
 std::string WStringToUtf8(const std::wstring& wstr);
+void AddToStartup();
