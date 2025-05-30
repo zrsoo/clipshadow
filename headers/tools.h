@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <cstdint>
 
 std::string WStringToUtf8(const std::wstring& wstr);
 std::vector<uint8_t> ExtractEmbeddedConfigFromWav(const std::string& filepath);

