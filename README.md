@@ -36,7 +36,7 @@ This repository contains the development of a custom Windows clipboard intercept
 - [ ] Encrypt clipboard data before sending
 
 ## 🔹 Stealth & Evasion
-- [ ] Hide console window (`SW_HIDE`)
+- [x] Hide console window - compile with -mwindows
 - [ ] Add persistence via Windows Registry (`HKCU\...\Run`)
 - [x] Static build (no DLL dependencies)
 - [ ] Encrypt all static strings (XOR or compile-time)
