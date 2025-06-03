@@ -32,7 +32,7 @@ This repository contains the development of a custom Windows clipboard intercept
 - [x] Extract and decode AES key from `.wav`
 - [x] Decrypt configuration
 - [x] Convert clipboard data to UTF-8
-- [ ] Migrate HTTP to **HTTPS** (via WinHTTP or adjusted WinINet)
+- [x] Migrate HTTP to **HTTPS** (via WinHTTP or adjusted WinINet)
 - [ ] Encrypt clipboard data before sending
 
 ## 🔹 Stealth & Evasion
