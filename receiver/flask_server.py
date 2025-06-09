@@ -22,4 +22,4 @@ def exfil():
 
 if __name__ == "__main__":
     os.makedirs(os.path.dirname(log_file) or ".", exist_ok=True)
-    app.run(host="0.0.0.0", port=443)
+    app.run(host="0.0.0.0", port=80)
