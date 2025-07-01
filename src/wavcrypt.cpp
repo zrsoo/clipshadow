@@ -84,11 +84,11 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
 
     size_t index = 0;
 
-    // === Extract AES key (32 bytes) ===
+    // Extract AES key (32 bytes)
     auto key = std::vector<uint8_t>(config.begin(), config.begin() + 32);
     index += 32;
 
-    // === Extract Host ===
+    // Extract Host
     auto iv_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
 
@@ -96,7 +96,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     auto enc_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_host);
     index += len_host;
 
-    // === Extract Port ===
+    // Extract Port
     auto iv_port = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
 
@@ -104,7 +104,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     auto enc_port = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_port);
     index += len_port;
 
-    // === Extract Path ===
+    // Extract Path
     auto iv_path = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
 
@@ -112,7 +112,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     auto enc_path = std::vector<uint8_t>(config.begin() + index, config.begin() + index + len_path);
     index += len_path;
 
-    // === Decrypt all three ===
+    // Decrypt all three
     std::string host = DecryptAES256CBC(enc_host, key, iv_host);
     std::string port = DecryptAES256CBC(enc_port, key, iv_port);
     std::string path = DecryptAES256CBC(enc_path, key, iv_path);
