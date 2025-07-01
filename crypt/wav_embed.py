@@ -1,7 +1,7 @@
 import wave
 import re
 
-# === Step 1: Load embedded_config from config_blob.h ===
+# Step 1: Load embedded_config from config_blob.h
 with open("crypt/config_blob.h", "r") as f:
     content = f.read()
 
@@ -13,7 +13,7 @@ for byte in byte_values:
         bit = (byte >> (7 - i)) & 1  # MSB-first
         bitstream.append(bit)
 
-# === Step 2: Open the base WAV ===
+# Step 2: Open the base WAV
 with wave.open("ouch_original.wav", "rb") as wav:
     params = wav.getparams()
     assert params.sampwidth == 2, "Only 16-bit WAV files are supported."
@@ -24,12 +24,12 @@ num_samples = len(samples) // 2
 if len(bitstream) > num_samples:
     raise ValueError("WAV file too short to hold the config data.")
 
-# === Step 3: Embed bits into LSBs of each 16-bit sample ===
+# Step 3: Embed bits into LSBs of each 16-bit sample
 for i, bit in enumerate(bitstream):
     sample_index = i * 2
     samples[sample_index] = (samples[sample_index] & 0xFE) | bit  # overwrite LSB
 
-# === Step 4: Write to stego.wav ===
+# Step 4: Write to stego.wav
 with wave.open("ouch.wav", "wb") as out:
     out.setparams(params)
     out.writeframes(samples)
