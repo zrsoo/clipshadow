@@ -6,8 +6,20 @@
 #include <cstring>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include <obfstr.h>
 #include "aes.h"
+
+void PrintHexData(const std::string& label, const std::vector<uint8_t>& data, size_t maxBytes) {
+    std::cout << "[DEMO] " << label << " (" << data.size() << " bytes): ";
+    size_t displayBytes = std::min(data.size(), maxBytes);
+    for (size_t i = 0; i < displayBytes; ++i) {
+        std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]);
+        if (i < displayBytes - 1) std::cout << " ";
+    }
+    if (data.size() > maxBytes) std::cout << "...";
+    std::cout << std::dec << std::endl;
+}
 
 std::string WStringToUtf8(const std::wstring& wstr)
 {
