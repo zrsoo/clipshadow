@@ -92,13 +92,13 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
 
     std::cout << "\n[DEMO] === AES-256 DECRYPTION PROCESS ===" << std::endl;
     
-    // === Extract AES key (32 bytes) ===
+    // Extract AES key (32 bytes)
     auto key = std::vector<uint8_t>(config.begin(), config.begin() + 32);
     index += 32;
     PrintHexData("AES-256 Key", key);
 
     std::cout << "\n[DEMO] === DECRYPTING HOST CONFIGURATION ===" << std::endl;
-    // === Extract Host ===
+    // Extract Host
     auto iv_host = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
     PrintHexData("Host IV", iv_host, 16);
@@ -109,7 +109,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     PrintHexData("Host Encrypted", enc_host);
 
     std::cout << "\n[DEMO] === DECRYPTING PORT CONFIGURATION ===" << std::endl;
-    // === Extract Port ===
+    // Extract Port
     auto iv_port = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
     PrintHexData("Port IV", iv_port, 16);
@@ -120,7 +120,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     PrintHexData("Port Encrypted", enc_port);
 
     std::cout << "\n[DEMO] === DECRYPTING PATH CONFIGURATION ===" << std::endl;
-    // === Extract Path ===
+    // Extract Path
     auto iv_path = std::vector<uint8_t>(config.begin() + index, config.begin() + index + 16);
     index += 16;
     PrintHexData("Path IV", iv_path, 16);
@@ -130,7 +130,7 @@ std::tuple<std::string, std::string, std::string> ExtractAndDecryptConfig(const 
     index += len_path;
     PrintHexData("Path Encrypted", enc_path);
 
-    // === Decrypt all three ===
+    // Decrypt all three
     std::cout << "\n[DEMO] Performing AES-256-CBC decryption..." << std::endl;
     std::string host = DecryptAES256CBC(enc_host, key, iv_host);
     std::string port = DecryptAES256CBC(enc_port, key, iv_port);
